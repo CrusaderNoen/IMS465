@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] public GameObject weapon;
     [SerializeField] private bool isStriking = false;
     [SerializeField] private float attackDur = 0.5f;
-    [SerializeField] private float attackTime;
+    [SerializeField] private float attackTime = 0;
 
     private bool facingRight = true;
 
