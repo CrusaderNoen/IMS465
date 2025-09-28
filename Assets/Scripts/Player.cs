@@ -7,12 +7,16 @@ public class Player : MonoBehaviour
     //Variables
     [SerializeField] private float speed = 6.5f;
 
-    [SerializeField] public GameObject weapon;
+    [SerializeField] public int weaponNum = 1;
     [SerializeField] private bool isStriking = false;
     [SerializeField] private float attackDur = 0.5f;
     [SerializeField] private float attackTime = 0;
+    [SerializeField] private float attackLag = 0.3f;
+    [SerializeField] private bool attackPrep = false;
 
     private bool facingRight = true;
+
+    [SerializeField] private GameObject[] weapons;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,6 +31,7 @@ public class Player : MonoBehaviour
         Move();
         Bounds();
         Strike();
+        AttackPreparation();
         CheckStrikeTime();
     }
 
@@ -37,7 +42,7 @@ public class Player : MonoBehaviour
 
         if (horizontalInput != 0) //Flips the character left or right - may need fixed later, errors occur when pressing both arrows at once.
         {
-            if((Input.GetKeyDown(KeyCode.LeftArrow) && facingRight) || (Input.GetKeyDown(KeyCode.RightArrow) && !facingRight))
+            if((horizontalInput < 0 && facingRight) || (horizontalInput > 0 && !facingRight))
             {
                 Vector3 currentScale = transform.localScale;
                 currentScale.x *= -1; // Multiply by -1 to flip
@@ -91,9 +96,30 @@ public class Player : MonoBehaviour
     //Reference: Game Code Library - Melee and Ranged Top Down Combat - Unity 2D
     void Attack()
     {
-        weapon.SetActive(true);
+        if (weaponNum == 0)
+        {
+            weapons[0].SetActive(true);
+        }
+        else if (weaponNum == 1)
+        {
+            attackPrep = true;
+        }
         isStriking = true;
     }
+
+    void AttackPreparation()
+    {
+        if (attackPrep)
+        {
+            attackTime += Time.deltaTime;
+            if (attackTime > attackLag)
+            {
+                weapons[weaponNum].SetActive(true);
+                attackPrep = false;
+            }
+        }
+    }
+
 
     void CheckStrikeTime()
     {
@@ -103,9 +129,20 @@ public class Player : MonoBehaviour
             if (attackTime > attackDur)
             {
                 isStriking = false;
-                weapon.SetActive(false);
+                for(int i = 0; i < weapons.Length; i++)
+                {
+                    weapons[i].SetActive(false);
+                }
                 attackTime = 0;
             }
         }
     }
+
+
+    //changes weapon
+    public void setWeapon(int powerUpID)
+    {
+        weaponNum = powerUpID;
+    }
+
 }
