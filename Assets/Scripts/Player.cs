@@ -17,7 +17,8 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
 
     [SerializeField] private GameObject[] weapons;
-
+    [SerializeField] private int[] baseDamage;
+    [SerializeField] private int bonusDamage;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -104,6 +105,10 @@ public class Player : MonoBehaviour
         {
             attackPrep = true;
         }
+        else if (weaponNum == 2)
+        {
+            weapons[2].SetActive(true);
+        }
         isStriking = true;
     }
 
@@ -143,6 +148,19 @@ public class Player : MonoBehaviour
     public void setWeapon(int powerUpID)
     {
         weaponNum = powerUpID;
+    }
+
+    //enhances stats
+    public void statUp(int powerUpID)
+    {
+        if(powerUpID == 0)
+        {
+            bonusDamage++;
+        }
+        if(powerUpID == 1)
+        {
+            speed += 0.1f;
+        }
     }
 
 }
