@@ -809,7 +809,7 @@ MonoBehaviour:
   speed: 6.5
   health: 3
   isHurt: 0
-  invulnerableDur: 0.5
+  invulnerableDur: 1
   invulnerableTime: 0
   weaponNum: 0
   isStriking: 0
