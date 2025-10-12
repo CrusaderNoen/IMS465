@@ -8,7 +8,6 @@ public class Monster : MonoBehaviour
     [SerializeField] private float invulnerableTime = 0;
 
     [SerializeField] private float health = 3;
-    [SerializeField] private float damage = 2;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,17 +26,19 @@ public class Monster : MonoBehaviour
     //Responsible for dealing damage
     private void OnTriggerStay2D(Collider2D collision)
     {
-        //if (collision.CompareTag("Player"))
-        //{
-        //    Player P = collision.GetComponent<Player>();
-        //    P.Damage();
-        //}
+        if (collision.CompareTag("Player"))
+        {
+            Player P = collision.GetComponent<Player>();
+            P.hurt();
+        }
         if (collision.CompareTag("Weapon0") || collision.CompareTag("Player"))
         {
             if (!isHurt)
             {
                 isHurt = true;
-                health -= damage;
+                //Player P = Player.GetComponent<Player>();
+                //health -= P.getDamage();
+                health -= 1;
                 if (health <= 0)
                 {
                     Destroy(gameObject);

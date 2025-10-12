@@ -6,6 +6,10 @@ public class Player : MonoBehaviour
 {
     //Variables
     [SerializeField] private float speed = 6.5f;
+    [SerializeField] private float health = 3;
+    [SerializeField] private bool isHurt = false;
+    [SerializeField] private float invulnerableDur = 0.5f;
+    [SerializeField] private float invulnerableTime = 0;
 
     [SerializeField] public int weaponNum = 1;
     [SerializeField] private bool isStriking = false;
@@ -17,7 +21,8 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
 
     [SerializeField] private GameObject[] weapons;
-
+    [SerializeField] private int[] baseDamage;
+    [SerializeField] private int bonusDamage;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,6 +38,7 @@ public class Player : MonoBehaviour
         Strike();
         AttackPreparation();
         CheckStrikeTime();
+        CheckInvulnerableTime();
     }
 
     // Moves the player
@@ -104,6 +110,10 @@ public class Player : MonoBehaviour
         {
             attackPrep = true;
         }
+        else if (weaponNum == 2)
+        {
+            weapons[2].SetActive(true);
+        }
         isStriking = true;
     }
 
@@ -145,4 +155,49 @@ public class Player : MonoBehaviour
         weaponNum = powerUpID;
     }
 
+    //enhances stats
+    public void statUp(int powerUpID)
+    {
+        if (powerUpID == 0)
+        {
+            bonusDamage++;
+        } else if (powerUpID == 1)
+        {
+            speed += 0.1f;
+        } else if (powerUpID == 2)
+        {
+            health++;
+        }
+    }
+
+    //damages the player
+    public void hurt()
+    {
+        if (!isHurt)
+        {
+            isHurt = true;
+            health -= 1;
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    void CheckInvulnerableTime()
+    {
+        if (isHurt)
+        {
+            invulnerableTime += Time.deltaTime;
+            if (invulnerableTime > invulnerableDur)
+            {
+                isHurt = false;
+                invulnerableTime = 0;
+            }
+        }
+    }
+    public int getDamage()
+    {
+        return bonusDamage + baseDamage[weaponNum];
+    }
 }
