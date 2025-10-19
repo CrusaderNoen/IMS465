@@ -31,14 +31,14 @@ public class Monster : MonoBehaviour
             Player P = collision.GetComponent<Player>();
             P.hurt();
         }
-        if (collision.CompareTag("Weapon0") || collision.CompareTag("Player"))
+        if (collision.CompareTag("Weapon0"))
         {
             if (!isHurt)
             {
                 isHurt = true;
-                //Player P = Player.GetComponent<Player>();
-                //health -= P.getDamage();
-                health -= 1;
+                Player P = collision.gameObject.transform.parent.gameObject.transform.parent.GetComponent<Player>();
+                health -= P.getDamage();
+                //health -= 1;
                 if (health <= 0)
                 {
                     Destroy(gameObject);

@@ -200,4 +200,20 @@ public class Player : MonoBehaviour
     {
         return bonusDamage + baseDamage[weaponNum];
     }
+
+    //pushes the crates
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pushable"))
+        {
+            Rigidbody2D pushableRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            if (pushableRb != null)
+            {
+                Vector2 pushDirection = (collision.transform.position - transform.position).normalized;
+                float pushForce = 1f;
+                pushableRb.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
+                
+            }
+        }
+    }
 }
