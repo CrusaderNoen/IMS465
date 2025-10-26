@@ -45,6 +45,15 @@ public class Monster : MonoBehaviour
                 }
             }
         }
+        if (collision.CompareTag("Pushable"))
+        {
+            isHurt = true;
+            health = health / 2 - 2;
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
 
