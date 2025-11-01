@@ -9,16 +9,25 @@ public class Monster : MonoBehaviour
 
     [SerializeField] private float health = 3;
 
+    [SerializeField] private float speed = 1f;
+    [SerializeField] private Transform playerTransform;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        //gets the player
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerTransform = player.transform;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        Hunt();
         CheckInvulnerableTime();
     }
 
@@ -68,6 +77,16 @@ public class Monster : MonoBehaviour
                 isHurt = false;
                 invulnerableTime = 0;
             }
+        }
+    }
+
+    //Tracks the player
+    private void Hunt()
+    {
+        if (playerTransform != null)
+        {
+            // Move the enemy towards the player's position
+            transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, speed * Time.deltaTime);
         }
     }
 }
