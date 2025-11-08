@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     //Variables
     [SerializeField] private float speed = 6.5f;
-    [SerializeField] private float health = 3;
+    [SerializeField] private int health = 3;
     [SerializeField] private bool isHurt = false;
     [SerializeField] private float invulnerableDur = 0.5f;
     [SerializeField] private float invulnerableTime = 0;
@@ -24,10 +24,12 @@ public class Player : MonoBehaviour
     [SerializeField] private int[] baseDamage;
     [SerializeField] private int bonusDamage;
 
+    private UIManager UI;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        UI = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -177,6 +179,10 @@ public class Player : MonoBehaviour
         {
             isHurt = true;
             health -= 1;
+            if (UI != null)
+            {
+                UI.UpdateLives(health); //actual parameter
+            }
             if (health <= 0)
             {
                 Destroy(gameObject);

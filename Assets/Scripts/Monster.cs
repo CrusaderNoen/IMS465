@@ -12,6 +12,8 @@ public class Monster : MonoBehaviour
     [SerializeField] private float speed = 1f;
     [SerializeField] private Transform playerTransform;
 
+    private UIManager UI;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,6 +24,7 @@ public class Monster : MonoBehaviour
         {
             playerTransform = player.transform;
         }
+        UI = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -50,6 +53,10 @@ public class Monster : MonoBehaviour
                 //health -= 1;
                 if (health <= 0)
                 {
+                    if (UI != null)
+                    {
+                        UI.UpdateScore(15);
+                    }
                     Destroy(gameObject);
                 }
             }
