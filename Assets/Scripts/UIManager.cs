@@ -40,4 +40,12 @@ public class UIManager : MonoBehaviour
             PlayerPrefs.SetInt("HighScore", highScore); //saves high score
         }
     }
+
+    public void resetScore()
+    {
+        score = 0;
+        scoreDisplay.text = "Score: " + score;
+
+        lifeDisplay.text = "Health: 5";
+    }
 }

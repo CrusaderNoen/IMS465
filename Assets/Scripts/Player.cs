@@ -185,6 +185,8 @@ public class Player : MonoBehaviour
             }
             if (health <= 0)
             {
+                GameManager GM = GameObject.Find("GameManager").GetComponent<GameManager>();
+                GM.gameOver = true;
                 Destroy(gameObject);
             }
         }

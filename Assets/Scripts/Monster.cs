@@ -9,7 +9,7 @@ public class Monster : MonoBehaviour
 
     [SerializeField] private float health = 3;
 
-    [SerializeField] private float speed = 1f;
+    [SerializeField] private float speed = 0.5f;
     [SerializeField] private Transform playerTransform;
 
     private UIManager UI;
@@ -24,7 +24,7 @@ public class Monster : MonoBehaviour
         {
             playerTransform = player.transform;
         }
-        UI = GameObject.Find("Canvas").GetComponent<UIManager>();
+            UI = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -32,6 +32,11 @@ public class Monster : MonoBehaviour
     {
         Hunt();
         CheckInvulnerableTime();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            Destroy(gameObject);
+        }
     }
 
 

@@ -3,20 +3,35 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
+    public bool gameOver = true;
     private bool paused = false;
     [SerializeField] private GameObject PausedText;
+    [SerializeField] private GameObject TitleScreen;
+    [SerializeField] private GameObject Player;
+    private SpawnManager SM;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         PausedText.SetActive(false);
-
+        SM = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gameOver)
+        {
+            TitleScreen.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Instantiate(Player, new Vector3(-3, 0, 0), Quaternion.identity);
+                TitleScreen.SetActive(false);
+                gameOver = false;
+                SM.StartGame();
+            }
+        }
         if (Input.GetKeyDown(KeyCode.P))
         {
             if (paused)

@@ -5,16 +5,20 @@ public class PowerUp : MonoBehaviour
 
     [SerializeField] private int powerUpId;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            Destroy(gameObject);
+        }
     }
 
 
