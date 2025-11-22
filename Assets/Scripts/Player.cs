@@ -24,6 +24,11 @@ public class Player : MonoBehaviour
     [SerializeField] private int[] baseDamage;
     [SerializeField] private int bonusDamage;
 
+    [SerializeField] private AudioClip AttackSFX;
+    [SerializeField] private AudioClip KOSFX;
+    [SerializeField] private AudioClip PowerSFX;
+    [SerializeField] private AudioClip HurtSFX;
+
     private UIManager UI;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -104,6 +109,7 @@ public class Player : MonoBehaviour
     //Reference: Game Code Library - Melee and Ranged Top Down Combat - Unity 2D
     void Attack()
     {
+        AudioSource.PlayClipAtPoint(AttackSFX, Camera.main.transform.position, 1.0f);
         if (weaponNum == 0)
         {
             weapons[0].SetActive(true);
@@ -154,12 +160,14 @@ public class Player : MonoBehaviour
     //changes weapon
     public void setWeapon(int powerUpID)
     {
+        AudioSource.PlayClipAtPoint(PowerSFX, Camera.main.transform.position, 1.0f);
         weaponNum = powerUpID;
     }
 
     //enhances stats
     public void statUp(int powerUpID)
     {
+        AudioSource.PlayClipAtPoint(PowerSFX, Camera.main.transform.position, 1.0f);
         if (powerUpID == 0)
         {
             bonusDamage++;
@@ -177,6 +185,7 @@ public class Player : MonoBehaviour
     {
         if (!isHurt)
         {
+            AudioSource.PlayClipAtPoint(HurtSFX, Camera.main.transform.position, 1.0f);
             isHurt = true;
             health -= 1;
             if (UI != null)
@@ -187,6 +196,7 @@ public class Player : MonoBehaviour
             {
                 GameManager GM = GameObject.Find("GameManager").GetComponent<GameManager>();
                 GM.gameOver = true;
+                AudioSource.PlayClipAtPoint(KOSFX, Camera.main.transform.position, 1.0f);
                 Destroy(gameObject);
             }
         }

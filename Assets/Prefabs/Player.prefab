@@ -154,6 +154,10 @@ MonoBehaviour:
   - {fileID: 9062703292047613753}
   baseDamage: 020000000200000002000000
   bonusDamage: 0
+  AttackSFX: {fileID: 8300000, guid: 4b294d59d2399014daa718b35c9de73b, type: 3}
+  KOSFX: {fileID: 8300000, guid: c8a3fe17a6641ec48b38fb455a40a223, type: 3}
+  PowerSFX: {fileID: 8300000, guid: 14f24de2a9a70154e96297de25e2184c, type: 3}
+  HurtSFX: {fileID: 8300000, guid: 0bddcb411d826e14bb26d40ae45d8e22, type: 3}
 --- !u!61 &1770502413139579970
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -226,7 +230,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 7
 --- !u!1 &7993697745987485126
 GameObject:
   m_ObjectHideFlags: 0

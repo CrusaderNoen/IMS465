@@ -39,7 +39,15 @@ public class SpawnManager : MonoBehaviour
         while (!GM.gameOver)
         {
             yield return new WaitForSeconds(3.0f);
-            Instantiate(EnemyPrefab, new Vector3(Random.Range(-4.0f, +4.0f), Random.Range(-4.0f, +4.0f), 0), Quaternion.identity);
+            double ranx = Random.Range(-1.0f, +1.0f);
+            if(ranx > 0)
+            {
+                Instantiate(EnemyPrefab, new Vector3(Random.Range(-4.0f, -2.0f), Random.Range(-4.0f, +4.0f), 0), Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(EnemyPrefab, new Vector3(Random.Range(+2.0f, +4.0f), Random.Range(-4.0f, +4.0f), 0), Quaternion.identity);
+            }
         }
     }
 

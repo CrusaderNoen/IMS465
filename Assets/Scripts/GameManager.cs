@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject PausedText;
     [SerializeField] private GameObject TitleScreen;
     [SerializeField] private GameObject Player;
+    [SerializeField] private GameObject Box;
     private SpawnManager SM;
 
 
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
                 TitleScreen.SetActive(false);
                 gameOver = false;
                 SM.StartGame();
+                Instantiate(Box, new Vector3(-2, 0, 0), Quaternion.identity);
             }
         }
         if (Input.GetKeyDown(KeyCode.P))

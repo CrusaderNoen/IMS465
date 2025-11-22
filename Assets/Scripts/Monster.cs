@@ -3,14 +3,16 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
 
-    [SerializeField] private bool isHurt = false;
+    [SerializeField] private bool isHurt = true;
     [SerializeField] private float invulnerableDur = 0.5f;
     [SerializeField] private float invulnerableTime = 0;
 
     [SerializeField] private float health = 3;
 
-    [SerializeField] private float speed = 0.5f;
+    [SerializeField] private float speed = 0.1f;
     [SerializeField] private Transform playerTransform;
+
+    [SerializeField] private AudioClip Boom;
 
     private UIManager UI;
 
@@ -62,6 +64,7 @@ public class Monster : MonoBehaviour
                     {
                         UI.UpdateScore(15);
                     }
+                    AudioSource.PlayClipAtPoint(Boom, Camera.main.transform.position, 1.0f);
                     Destroy(gameObject);
                 }
             }
@@ -72,6 +75,11 @@ public class Monster : MonoBehaviour
             health = health / 2 - 2;
             if (health <= 0)
             {
+                if (UI != null)
+                {
+                    UI.UpdateScore(15);
+                }
+                AudioSource.PlayClipAtPoint(Boom, Camera.main.transform.position, 1.0f);
                 Destroy(gameObject);
             }
         }
@@ -95,7 +103,7 @@ public class Monster : MonoBehaviour
     //Tracks the player
     private void Hunt()
     {
-        if (playerTransform != null)
+        if (playerTransform != null && isHurt == false)
         {
             // Move the enemy towards the player's position
             transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, speed * Time.deltaTime);

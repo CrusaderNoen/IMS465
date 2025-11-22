@@ -13,6 +13,11 @@ public class Crate : MonoBehaviour
     void Update()
     {
         Bounds();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            Destroy(gameObject);
+        }
     }
 
     //Puts crate back in playable zone
