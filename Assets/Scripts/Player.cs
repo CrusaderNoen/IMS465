@@ -1,5 +1,7 @@
+using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.Port;
 
 public class Player : MonoBehaviour
 
@@ -30,11 +32,14 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip HurtSFX;
 
     private UIManager UI;
+    private Animator Anim;
+    public GameObject childObject;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         UI = GameObject.Find("Canvas").GetComponent<UIManager>();
+        Anim = childObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -53,7 +58,7 @@ public class Player : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        if (horizontalInput != 0) //Flips the character left or right - may need fixed later, errors occur when pressing both arrows at once.
+        if (horizontalInput != 0) //Flips the character left or right
         {
             if((horizontalInput < 0 && facingRight) || (horizontalInput > 0 && !facingRight))
             {
@@ -68,7 +73,16 @@ public class Player : MonoBehaviour
 
         transform.Translate(Vector3.right * horizontalInput * speed * Time.deltaTime);
         transform.Translate(Vector3.up * verticalInput * speed * Time.deltaTime);
-
+        if(horizontalInput != 0 || verticalInput != 0)
+        {
+            Anim.SetBool("isMoving", true);
+            //Debug.Log("Moving");
+        }
+        else
+        {
+            Anim.SetBool("isMoving", false);
+            //Debug.Log(" Not Moving");
+        }
         
     }
 
@@ -188,6 +202,7 @@ public class Player : MonoBehaviour
             AudioSource.PlayClipAtPoint(HurtSFX, Camera.main.transform.position, 1.0f);
             isHurt = true;
             health -= 1;
+
             if (UI != null)
             {
                 UI.UpdateLives(health); //actual parameter

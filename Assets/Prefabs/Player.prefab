@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3242844452885416506}
   - component: {fileID: 5805256892342842081}
+  - component: {fileID: 8645390696906906113}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -90,6 +91,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8645390696906906113
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5464246879245004969}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6842ca104c695dc4d87004a641bf20c3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7988985871976891597
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,6 +181,7 @@ MonoBehaviour:
   KOSFX: {fileID: 8300000, guid: c8a3fe17a6641ec48b38fb455a40a223, type: 3}
   PowerSFX: {fileID: 8300000, guid: 14f24de2a9a70154e96297de25e2184c, type: 3}
   HurtSFX: {fileID: 8300000, guid: 0bddcb411d826e14bb26d40ae45d8e22, type: 3}
+  childObject: {fileID: 5464246879245004969}
 --- !u!61 &1770502413139579970
 BoxCollider2D:
   m_ObjectHideFlags: 0

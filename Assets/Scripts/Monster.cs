@@ -15,7 +15,7 @@ public class Monster : MonoBehaviour
     [SerializeField] private AudioClip Boom;
 
     private UIManager UI;
-
+    private Animator Anim;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,7 +26,8 @@ public class Monster : MonoBehaviour
         {
             playerTransform = player.transform;
         }
-            UI = GameObject.Find("Canvas").GetComponent<UIManager>();
+        UI = GameObject.Find("Canvas").GetComponent<UIManager>();
+        Anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -58,6 +59,7 @@ public class Monster : MonoBehaviour
                 Player P = collision.gameObject.transform.parent.gameObject.transform.parent.GetComponent<Player>();
                 health -= P.getDamage();
                 //health -= 1;
+                Anim.SetBool("isHurt", true);
                 if (health <= 0)
                 {
                     if (UI != null)
@@ -96,6 +98,7 @@ public class Monster : MonoBehaviour
             {
                 isHurt = false;
                 invulnerableTime = 0;
+                Anim.SetBool("isHurt", false);
             }
         }
     }
