@@ -31,6 +31,9 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip PowerSFX;
     [SerializeField] private AudioClip HurtSFX;
 
+    [SerializeField] private float nerfDur = 5f;
+    [SerializeField] private float nerfTime = 0;
+
     private UIManager UI;
     private Animator Anim;
     public GameObject childObject;
@@ -51,6 +54,7 @@ public class Player : MonoBehaviour
         AttackPreparation();
         CheckStrikeTime();
         CheckInvulnerableTime();
+        NerfPlayer();
     }
 
     // Moves the player
@@ -247,6 +251,21 @@ public class Player : MonoBehaviour
                 pushableRb.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
                 
             }
+        }
+    }
+
+    //lowers player attack every few seconds for the illusion of difficulty scaling
+    void NerfPlayer()
+    {
+        
+        nerfTime += Time.deltaTime;
+        if (nerfTime > nerfDur)
+        {
+            if(bonusDamage > 0)
+            {
+                bonusDamage--;
+            }
+            nerfTime = 0;
         }
     }
 }

@@ -105,8 +105,8 @@ MonoBehaviour:
   isHurt: 1
   invulnerableDur: 0.5
   invulnerableTime: 0
-  health: 3
-  speed: 3
+  health: 7
+  speed: 2
   playerTransform: {fileID: 0}
   Boom: {fileID: 8300000, guid: 291608b8d286e2a4580ff36324455ce2, type: 3}
 --- !u!61 &7284102302580819187
