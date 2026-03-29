@@ -1,11 +1,17 @@
+using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.Port;
 
 public class Player : MonoBehaviour
 
 {
     //Variables
     [SerializeField] private float speed = 6.5f;
+    [SerializeField] private int health = 3;
+    [SerializeField] private bool isHurt = false;
+    [SerializeField] private float invulnerableDur = 0.5f;
+    [SerializeField] private float invulnerableTime = 0;
 
     [SerializeField] public int weaponNum = 1;
     [SerializeField] private bool isStriking = false;
@@ -17,12 +23,26 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
 
     [SerializeField] private GameObject[] weapons;
+    [SerializeField] private int[] baseDamage;
+    [SerializeField] private int bonusDamage;
 
+    [SerializeField] private AudioClip AttackSFX;
+    [SerializeField] private AudioClip KOSFX;
+    [SerializeField] private AudioClip PowerSFX;
+    [SerializeField] private AudioClip HurtSFX;
+
+    [SerializeField] private float nerfDur = 5f;
+    [SerializeField] private float nerfTime = 0;
+
+    private UIManager UI;
+    private Animator Anim;
+    public GameObject childObject;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        UI = GameObject.Find("Canvas").GetComponent<UIManager>();
+        Anim = childObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -33,6 +53,8 @@ public class Player : MonoBehaviour
         Strike();
         AttackPreparation();
         CheckStrikeTime();
+        CheckInvulnerableTime();
+        NerfPlayer();
     }
 
     // Moves the player
@@ -40,7 +62,7 @@ public class Player : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        if (horizontalInput != 0) //Flips the character left or right - may need fixed later, errors occur when pressing both arrows at once.
+        if (horizontalInput != 0) //Flips the character left or right
         {
             if((horizontalInput < 0 && facingRight) || (horizontalInput > 0 && !facingRight))
             {
@@ -55,7 +77,16 @@ public class Player : MonoBehaviour
 
         transform.Translate(Vector3.right * horizontalInput * speed * Time.deltaTime);
         transform.Translate(Vector3.up * verticalInput * speed * Time.deltaTime);
-
+        if(horizontalInput != 0 || verticalInput != 0)
+        {
+            Anim.SetBool("isMoving", true);
+            //Debug.Log("Moving");
+        }
+        else
+        {
+            Anim.SetBool("isMoving", false);
+            //Debug.Log(" Not Moving");
+        }
         
     }
 
@@ -96,6 +127,7 @@ public class Player : MonoBehaviour
     //Reference: Game Code Library - Melee and Ranged Top Down Combat - Unity 2D
     void Attack()
     {
+        AudioSource.PlayClipAtPoint(AttackSFX, Camera.main.transform.position, 1.0f);
         if (weaponNum == 0)
         {
             weapons[0].SetActive(true);
@@ -103,6 +135,10 @@ public class Player : MonoBehaviour
         else if (weaponNum == 1)
         {
             attackPrep = true;
+        }
+        else if (weaponNum == 2)
+        {
+            weapons[2].SetActive(true);
         }
         isStriking = true;
     }
@@ -142,7 +178,94 @@ public class Player : MonoBehaviour
     //changes weapon
     public void setWeapon(int powerUpID)
     {
+        AudioSource.PlayClipAtPoint(PowerSFX, Camera.main.transform.position, 1.0f);
         weaponNum = powerUpID;
     }
 
+    //enhances stats
+    public void statUp(int powerUpID)
+    {
+        AudioSource.PlayClipAtPoint(PowerSFX, Camera.main.transform.position, 1.0f);
+        if (powerUpID == 0)
+        {
+            bonusDamage++;
+        } else if (powerUpID == 1)
+        {
+            speed += 0.1f;
+        } else if (powerUpID == 2)
+        {
+            health++;
+        }
+    }
+
+    //damages the player
+    public void hurt()
+    {
+        if (!isHurt)
+        {
+            AudioSource.PlayClipAtPoint(HurtSFX, Camera.main.transform.position, 1.0f);
+            isHurt = true;
+            health -= 1;
+
+            if (UI != null)
+            {
+                UI.UpdateLives(health); //actual parameter
+            }
+            if (health <= 0)
+            {
+                GameManager GM = GameObject.Find("GameManager").GetComponent<GameManager>();
+                GM.gameOver = true;
+                AudioSource.PlayClipAtPoint(KOSFX, Camera.main.transform.position, 1.0f);
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    void CheckInvulnerableTime()
+    {
+        if (isHurt)
+        {
+            invulnerableTime += Time.deltaTime;
+            if (invulnerableTime > invulnerableDur)
+            {
+                isHurt = false;
+                invulnerableTime = 0;
+            }
+        }
+    }
+    public int getDamage()
+    {
+        return bonusDamage + baseDamage[weaponNum];
+    }
+
+    //pushes the crates
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pushable"))
+        {
+            Rigidbody2D pushableRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            if (pushableRb != null)
+            {
+                Vector2 pushDirection = (collision.transform.position - transform.position).normalized;
+                float pushForce = 1f;
+                pushableRb.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
+                
+            }
+        }
+    }
+
+    //lowers player attack every few seconds for the illusion of difficulty scaling
+    void NerfPlayer()
+    {
+        
+        nerfTime += Time.deltaTime;
+        if (nerfTime > nerfDur)
+        {
+            if(bonusDamage > 0)
+            {
+                bonusDamage--;
+            }
+            nerfTime = 0;
+        }
+    }
 }

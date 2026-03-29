@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PowerUp : MonoBehaviour
+public class StatUp : MonoBehaviour
 {
 
     [SerializeField] private int powerUpId;
@@ -9,6 +9,7 @@ public class PowerUp : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -29,7 +30,7 @@ public class PowerUp : MonoBehaviour
             Player P = collision.GetComponent<Player>();
             if (P != null)
             {
-                P.setWeapon(powerUpId);
+                P.statUp(powerUpId);
             }
             Destroy(gameObject);
         }
